@@ -1,28 +1,47 @@
 'use strict';
-const KEY = 'wordpractice-g5-fall-v3';
+const KEY = 'wordpractice-g5-fall-v4';
 const $ = id => document.getElementById(id);
-const blankTest = () => ({answers:Array(25).fill(null),question:0,submitted:false});
-let activeSet=0, attempts=[blankTest(),blankTest()], word=0;
+function shuffle(size, previous){
+ const values=Array.from({length:size},(_,i)=>i);
+ for(let i=size-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[values[i],values[j]]=[values[j],values[i]];}
+ if(previous&&values.every((v,i)=>v===previous[i])&&size>1)[values[0],values[1]]=[values[1],values[0]];
+ return values;
+}
+function blankTest(setIndex, previous){
+ const bank=CHALLENGE_BANK[setIndex];
+ return {answers:Array(25).fill(null),question:0,submitted:false,order:shuffle(25,previous?.order),optionOrders:Array.from({length:25},(_,i)=>shuffle(5,previous?.optionOrders[i])),challengeIds:shuffle(bank.length).slice(0,2).map(i=>bank[i].id)};
+}
+function permutation(value,size){return Array.isArray(value)&&value.length===size&&new Set(value).size===size&&value.every(i=>Number.isInteger(i)&&i>=0&&i<size);}
+let activeSet=0, attempts=[blankTest(0),blankTest(1)], word=0;
 try {
  const saved=JSON.parse(localStorage.getItem(KEY));
  if(saved){
   activeSet=saved.activeSet===1?1:0;
   word=Number.isInteger(saved.word)&&saved.word>=0&&saved.word<25?saved.word:0;
-  if(Array.isArray(saved.attempts)&&saved.attempts.length===2) attempts=saved.attempts.map(s=>{
-   if(!s||!Array.isArray(s.answers)||s.answers.length!==25)return blankTest();
+  if(Array.isArray(saved.attempts)&&saved.attempts.length===2) attempts=saved.attempts.map((s,index)=>{
+   if(!s||!Array.isArray(s.answers)||s.answers.length!==25||!permutation(s.order,25)||!Array.isArray(s.optionOrders)||s.optionOrders.length!==25||!s.optionOrders.every(p=>permutation(p,5))||!Array.isArray(s.challengeIds)||s.challengeIds.length!==2||new Set(s.challengeIds).size!==2||!s.challengeIds.every(id=>CHALLENGE_BANK[index].some(q=>q.id===id)))return blankTest(index);
    const answers=s.answers.map(a=>Number.isInteger(a)&&a>=0&&a<5?a:null);
-   return {answers,question:Number.isInteger(s.question)&&s.question>=0&&s.question<25?s.question:0,submitted:s.submitted===true&&answers.every(a=>a!==null)};
+   return {...s,answers,question:Number.isInteger(s.question)&&s.question>=0&&s.question<25?s.question:0,submitted:s.submitted===true&&answers.every(a=>a!==null)};
   });
  }
 }catch{}
-let QUESTIONS=TEST_SETS[activeSet];
 let state={word,...attempts[activeSet]};
+function attemptQuestions(){return state.order.map((sourceId,id)=>{
+ const challenge=state.challengeIds.includes(sourceId)?CHALLENGE_BANK[activeSet].find(q=>q.id===sourceId):null;
+ const source=challenge||TEST_SETS[activeSet][sourceId],choices=state.optionOrders[sourceId];
+ return {...source,id,sourceId,challenge:!!challenge,options:choices.map(i=>source.options[i]),answer:choices.indexOf(source.answer)};
+});}
+let QUESTIONS=attemptQuestions();
 function save(){
- attempts[activeSet]={answers:[...state.answers],question:state.question,submitted:state.submitted};
- try{localStorage.setItem(KEY,JSON.stringify({word:state.word,activeSet,attempts}));}catch{$('storage-status').textContent='Browser storage is unavailable. Your progress will last only while this page is open.';}
+ const {word,...attempt}=state;attempts[activeSet]=JSON.parse(JSON.stringify(attempt));
+ try{localStorage.setItem(KEY,JSON.stringify({word,activeSet,attempts}));}catch{$('storage-status').textContent='Browser storage is unavailable. Your progress will last only while this page is open.';}
 }
 function switchSet(index){
- save();activeSet=index;QUESTIONS=TEST_SETS[index];state={word:state.word,...attempts[index]};save();renderTest();
+ save();activeSet=index;state={word:state.word,...attempts[index]};QUESTIONS=attemptQuestions();save();renderTest();
+}
+function restartTest(){
+ if(!confirm('Start a new attempt? This test’s current answers and score will be cleared. Questions and choices will be shuffled, with two challenge questions selected.'))return;
+ state={word:state.word,...blankTest(activeSet,state)};QUESTIONS=attemptQuestions();save();renderTest();$('question-heading').focus();
 }
 function renderList(){
  const filter=$('search').value.trim().toLowerCase();
@@ -41,7 +60,7 @@ function renderTest(){
  $('test-set').value=String(activeSet);
  if(state.submitted){renderResults();return;}
  const q=QUESTIONS[state.question], count=answered();
- $('test-content').innerHTML='<div class="test-layout"><div class="test-card"><div class="q-top"><span>FALL PRACTICE · TEST '+(activeSet+1)+'</span><span>Question '+(q.id+1)+' of 25</span></div><progress aria-label="Questions answered" value="'+count+'" max="25"></progress><h2 class="analogy" id="question-heading" tabindex="-1">'+q.prompt+'</h2><fieldset><legend>Choose the word or pair that completes the same relationship.</legend>'+q.options.map((o,i)=>'<label class="option"><input type="radio" name="answer" value="'+i+'" '+(state.answers[q.id]===i?'checked':'')+'><span class="letter">'+String.fromCharCode(65+i)+'</span><span>'+o+'</span></label>').join('')+'</fieldset><div class="question-controls"><button class="button" id="prev-q" '+(q.id===0?'disabled':'')+'>← Previous</button><button class="button primary" id="next-q" '+(q.id===24?'disabled':'')+'>Next question →</button></div><p class="small">You can change any answer before submitting. Explanations appear after all 25 questions are answered.</p></div><aside class="test-sidebar"><h2>Your answer map</h2><p class="test-intro">Read A : B :: C : D as “A is to B as C is to D.” Match the relationship, not just the topic.</p><p id="answer-count" class="small" aria-live="polite">'+count+' of 25 answered</p><div class="q-grid">'+QUESTIONS.map(x=>'<button data-question="'+x.id+'" class="'+(state.answers[x.id]!==null?'answered ':'')+(x.id===q.id?'current':'')+'" aria-label="Question '+(x.id+1)+(state.answers[x.id]!==null?', answered':', unanswered')+'" '+(x.id===q.id?'aria-current="step"':'')+'>'+(x.id+1)+'</button>').join('')+'</div><p class="small">Green = answered · outlined = current</p><div class="submit-area"><button id="submit" class="button primary" '+(count<25?'disabled':'')+'>Finish & see results</button><p id="submit-hint">'+(count<25?'Answer all '+(25-count)+' remaining questions to unlock your results.':'All questions answered. Ready when you are!')+'</p><button id="unanswered" class="plain" '+(count===25?'hidden':'')+'>Go to next unanswered →</button></div></aside></div>';
+ $('test-content').innerHTML='<div class="test-layout"><div class="test-card"><div class="q-top"><span>FALL PRACTICE · TEST '+(activeSet+1)+'</span><span>Question '+(q.id+1)+' of 25'+(q.challenge?' · Challenge':'')+'</span></div><progress aria-label="Questions answered" value="'+count+'" max="25"></progress><h2 class="analogy" id="question-heading" tabindex="-1">'+q.prompt+'</h2><fieldset><legend>Choose the word or pair that completes the same relationship.</legend>'+q.options.map((o,i)=>'<label class="option"><input type="radio" name="answer" value="'+i+'" '+(state.answers[q.id]===i?'checked':'')+'><span class="letter">'+String.fromCharCode(65+i)+'</span><span>'+o+'</span></label>').join('')+'</fieldset><div class="question-controls"><button class="button" id="prev-q" '+(q.id===0?'disabled':'')+'>← Previous</button><button class="button primary" id="next-q" '+(q.id===24?'disabled':'')+'>Next question →</button></div><p class="small">You can change any answer before submitting. Explanations appear after all 25 questions are answered.</p></div><aside class="test-sidebar"><h2>Your answer map</h2><p class="test-intro">Read A : B :: C : D as “A is to B as C is to D.” Match the relationship, not just the topic.</p><p id="answer-count" class="small" aria-live="polite">'+count+' of 25 answered</p><div class="q-grid">'+QUESTIONS.map(x=>'<button data-question="'+x.id+'" class="'+(state.answers[x.id]!==null?'answered ':'')+(x.id===q.id?'current':'')+'" aria-label="Question '+(x.id+1)+(state.answers[x.id]!==null?', answered':', unanswered')+'" '+(x.id===q.id?'aria-current="step"':'')+'>'+(x.id+1)+'</button>').join('')+'</div><p class="small">Green = answered · outlined = current</p><div class="submit-area"><button id="submit" class="button primary" '+(count<25?'disabled':'')+'>Finish & see results</button><p id="submit-hint">'+(count<25?'Answer all '+(25-count)+' remaining questions to unlock your results.':'All questions answered. Ready when you are!')+'</p><button id="unanswered" class="plain" '+(count===25?'hidden':'')+'>Go to next unanswered →</button><button id="restart" class="plain">Restart this test ↻</button></div></aside></div>';
  document.querySelectorAll('input[name=answer]').forEach(input=>input.onchange=()=>{
  state.answers[q.id]=Number(input.value);save();
  const count=answered();$('answer-count').textContent=count+' of 25 answered';
@@ -54,11 +73,12 @@ function renderTest(){
  $('next-q').onclick=()=>{if(q.id<24)moveQuestion(q.id+1);};
  document.querySelectorAll('[data-question]').forEach(b=>b.onclick=()=>moveQuestion(Number(b.dataset.question)));
  $('unanswered').onclick=()=>{const i=state.answers.findIndex(a=>a===null);if(i>=0)moveQuestion(i);};
+ $('restart').onclick=restartTest;
  $('submit').onclick=()=>{if(answered()===25){state.submitted=true;save();renderResults();$('result-heading').focus();}};
 }
 function renderResults(){
  const score=QUESTIONS.reduce((n,q)=>n+(state.answers[q.id]===q.answer?1:0),0);
- $('test-content').innerHTML='<div class="result-hero"><div><p class="eyebrow" style="color:#ebca8f">TEST '+(activeSet+1)+' COMPLETE</p><h2 id="result-heading" tabindex="-1">'+(score===25?'Every connection found.':'Every connection is a chance to learn.')+'</h2><p>'+score+' correct out of 25 · '+(25-score)+' to revisit</p></div><div class="score">'+(score*4)+'%</div></div><div class="review-toolbar"><h2>Your answer notebook</h2><label><input type="checkbox" id="missed-only"> Show only missed questions</label></div><div id="reviews"></div><div class="review-actions"><a class="button" href="#learn">Back to word study</a><button id="retry" class="button primary">Try this set again</button></div><p class="small">This is a fixed practice set. Retaking it uses the same questions, so a higher score may reflect remembering the answers.</p>';
+ $('test-content').innerHTML='<div class="result-hero"><div><p class="eyebrow" style="color:#ebca8f">TEST '+(activeSet+1)+' COMPLETE</p><h2 id="result-heading" tabindex="-1">'+(score===25?'Every connection found.':'Every connection is a chance to learn.')+'</h2><p>'+score+' correct out of 25 · '+(25-score)+' to revisit</p></div><div class="score">'+(score*4)+'%</div></div><div class="review-toolbar"><h2>Your answer notebook</h2><label><input type="checkbox" id="missed-only"> Show only missed questions</label></div><div id="reviews"></div><div class="review-actions"><a class="button" href="#learn">Back to word study</a><button id="retry" class="button primary">Try this set again</button></div><p class="small">Each new attempt shuffles the questions and choices and selects two challenge questions. The word list stays the same.</p>';
  function reviews(){
  const qs=QUESTIONS.filter(q=>!$('missed-only').checked||state.answers[q.id]!==q.answer);
  $('reviews').innerHTML=qs.map(q=>{
@@ -67,7 +87,7 @@ function renderResults(){
  }).join('')||'<p>No missed questions. You found every connection!</p>';
  }
  $('missed-only').onchange=reviews;reviews();
- $('retry').onclick=()=>{if(confirm('Start this same set again? Your current test answers and score will be cleared.')){state.answers=Array(25).fill(null);state.question=0;state.submitted=false;save();renderTest();$('question-heading').focus();}};
+ $('retry').onclick=restartTest;
 }
 function route(){
  const test=location.hash==='#test';
@@ -77,5 +97,5 @@ function route(){
  if(test)renderTest();else renderLearn();
 }
 $('test-set').onchange=e=>switchSet(Number(e.target.value));
-$('search').oninput=renderList;window.addEventListener('hashchange',route);route();
+$('search').oninput=renderList;window.addEventListener('hashchange',route);save();route();
 
