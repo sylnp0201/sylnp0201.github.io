@@ -465,380 +465,759 @@ const WORDS = [
     ]
   }
 ];
-const QUESTIONS = [
-  {
-    "id": 0,
-    "prompt": "CASCADE : DESCEND :: SPRINT : ____",
-    "options": [
-      "read",
-      "swim",
-      "run",
-      "sleep",
-      "grow"
-    ],
-    "answer": 2,
-    "relation": "Specific action and broader action",
-    "explanation": "To cascade is to descend in a flowing or tumbling way. To sprint is to run at full speed.",
-    "trap": "The second pair must name the broader action, not a possible location or result."
-  },
-  {
-    "id": 1,
-    "prompt": "PRUNE : BRANCH :: ____",
-    "options": [
-      "delete : sentence",
-      "plant : seed",
-      "quibble : detail",
-      "admire : flower",
-      "count : leaf"
-    ],
-    "answer": 0,
-    "relation": "Remove something from a larger whole",
-    "explanation": "To prune a branch is to cut it away from a plant. To delete a sentence is to remove it from a piece of writing.",
-    "trap": "To quibble over a detail is to dispute it, not remove it. Planting adds something instead of taking it away."
-  },
-  {
-    "id": 2,
-    "prompt": "WITTY : REMARK :: MELODIOUS : ____",
-    "options": [
-      "portrait",
-      "perfume",
-      "fabric",
-      "recipe",
-      "tune"
-    ],
-    "answer": 4,
-    "relation": "A quality and what can have it",
-    "explanation": "A remark can be witty, or cleverly funny. A tune can be melodious, or pleasant to hear.",
-    "trap": "Match the kind of thing that can have the quality. A portrait is seen rather than heard."
-  },
-  {
-    "id": 3,
-    "prompt": "EMBER : HEAT :: BELL : ____",
-    "options": [
-      "metal",
-      "sound",
-      "rope",
-      "tower",
-      "silence"
-    ],
-    "answer": 1,
-    "relation": "Source and what it gives off",
-    "explanation": "An ember gives off heat. A ringing bell gives off sound.",
-    "trap": "Metal is what a bell may be made of; a tower is where it may hang. Neither is what it produces."
-  },
-  {
-    "id": 4,
-    "prompt": "GLARE : DISPLEASURE :: BLUSH : ____",
-    "options": [
-      "temperature",
-      "curiosity",
-      "exhaustion",
-      "embarrassment",
-      "agreement"
-    ],
-    "answer": 3,
-    "relation": "An outward sign and the feeling it can express",
-    "explanation": "An angry glare can express displeasure. A blush can reveal embarrassment.",
-    "trap": "A blush can have several causes, but embarrassment is the feeling that best matches this expression-to-emotion relationship."
-  },
-  {
-    "id": 5,
-    "prompt": "NIMBLE : AGILITY :: ____ : STRENGTH",
-    "options": [
-      "patient",
-      "fragile",
-      "solemn",
-      "brawny",
-      "wealthy"
-    ],
-    "answer": 3,
-    "relation": "Adjective and the quality it implies",
-    "explanation": "Someone nimble has agility, or the ability to move easily and quickly. Someone brawny has physical strength.",
-    "trap": "Wealth concerns possessions, and patience concerns waiting. Neither describes the physical quality asked for."
-  },
-  {
-    "id": 6,
-    "prompt": "QUAGMIRE : MOVEMENT :: MUZZLE : ____",
-    "options": [
-      "fur",
-      "biting",
-      "scent",
-      "feeding bowl",
-      "leash"
-    ],
-    "answer": 1,
-    "relation": "Something that restricts an activity",
-    "explanation": "A quagmire can hinder movement by trapping feet in mud. A muzzle can prevent an animal from biting.",
-    "trap": "Choose the activity that is restricted, not another object associated with the animal."
-  },
-  {
-    "id": 7,
-    "prompt": "SUBDUE : UPRISING :: EXTINGUISH : ____",
-    "options": [
-      "smoke",
-      "water",
-      "matchbox",
-      "darkness",
-      "blaze"
-    ],
-    "answer": 4,
-    "relation": "Bring an active disturbance to an end",
-    "explanation": "To subdue an uprising is to bring a rebellion under control. To extinguish a blaze is to put out a fire.",
-    "trap": "Water may be a means of extinguishing, while smoke may be a result of burning. The blank names what is stopped."
-  },
-  {
-    "id": 8,
-    "prompt": "GENEROUS : SHARING :: ____ : WAITING",
-    "options": [
-      "patient",
-      "impatient",
-      "careless",
-      "jealous",
-      "crafty"
-    ],
-    "answer": 0,
-    "relation": "A quality that supports an action",
-    "explanation": "A generous person is willing to share. A patient person is willing to wait without becoming upset.",
-    "trap": "Impatient reverses the relationship. Being crafty concerns clever trickery, not tolerance for waiting."
-  },
-  {
-    "id": 9,
-    "prompt": "FABLE : LESSON :: ____ : DECEPTION",
-    "options": [
-      "receipt",
-      "recipe",
-      "ruse",
-      "greeting",
-      "inventory"
-    ],
-    "answer": 2,
-    "relation": "A creation and its intended purpose",
-    "explanation": "A fable is a story intended to teach a lesson. A ruse is a plan intended to produce deception, or a false belief.",
-    "trap": "A receipt records a purchase, and an inventory lists items. Neither is designed to mislead."
-  },
-  {
-    "id": 10,
-    "prompt": "VANQUISH : VICTORY :: ESCAPE : ____",
-    "options": [
-      "pursuit",
-      "capture",
-      "barrier",
-      "entrance",
-      "freedom"
-    ],
-    "answer": 4,
-    "relation": "Successful action and its result",
-    "explanation": "To vanquish is to achieve victory over someone. To escape is to gain freedom from confinement or danger.",
-    "trap": "Pursuit may follow an escape, but it is not the successful result that defines escaping. Capture is the opposite result."
-  },
-  {
-    "id": 11,
-    "prompt": "FAMINE : GAUNT :: DROUGHT : ____",
-    "options": [
-      "flooded",
-      "crowded",
-      "parched",
-      "frozen",
-      "fertile"
-    ],
-    "answer": 2,
-    "relation": "Cause and a resulting condition",
-    "explanation": "A famine can leave people gaunt from severe lack of food. A drought can leave land parched, meaning extremely dry.",
-    "trap": "Fertile means able to support growth. Flooded is the opposite of the dry condition caused by drought."
-  },
-  {
-    "id": 12,
-    "prompt": "RESIDUE : CLEANING :: WRINKLES : ____",
-    "options": [
-      "ironing",
-      "weaving",
-      "dyeing",
-      "folding",
-      "measuring"
-    ],
-    "answer": 0,
-    "relation": "Unwanted condition and a way to remove it",
-    "explanation": "Cleaning can remove unwanted residue from a surface. Ironing can remove wrinkles from fabric.",
-    "trap": "Folding may create creases rather than smooth them out. Weaving makes fabric instead of removing wrinkles."
-  },
-  {
-    "id": 13,
-    "prompt": "WHITTLE : WOOD :: ____",
-    "options": [
-      "hustle : hurry",
-      "paint : brush",
-      "polish : shine",
-      "carve : stone",
-      "clay : sculpt"
-    ],
-    "answer": 3,
-    "relation": "Shape a material by cutting pieces away",
-    "explanation": "To whittle is to shape wood by cutting small pieces away. To carve stone is also to shape a material by cutting it.",
-    "trap": "Polish : shine gives an action and its result. Clay : sculpt reverses the material-and-action order."
-  },
-  {
-    "id": 14,
-    "prompt": "ROTUND : SPHERE :: CUBICAL : ____",
-    "options": [
-      "circle",
-      "cube",
-      "cone",
-      "triangle",
-      "pyramid"
-    ],
-    "answer": 1,
-    "relation": "Descriptive shape word and its model",
-    "explanation": "Rotund means rounded, like a sphere. Cubical means shaped like a cube.",
-    "trap": "A circle is flat, and a pyramid has a different solid shape. Match the precise shape named by the adjective."
-  },
-  {
-    "id": 15,
-    "prompt": "PRECIPICE : FALL :: WHIRLPOOL : ____",
-    "options": [
-      "float",
-      "drown",
-      "climb",
-      "sail",
-      "freeze"
-    ],
-    "answer": 1,
-    "relation": "Hazard and the danger it presents",
-    "explanation": "A precipice presents the danger of a fall. A whirlpool presents the danger of drowning.",
-    "trap": "Floating or sailing can happen on water, but neither is the dangerous outcome that matches falling from a high edge."
-  },
-  {
-    "id": 16,
-    "prompt": "LOITER : PURPOSELESSLY :: STRUT : ____",
-    "options": [
-      "anxiously",
-      "silently",
-      "wearily",
-      "accidentally",
-      "proudly"
-    ],
-    "answer": 4,
-    "relation": "Action and its characteristic manner",
-    "explanation": "To loiter is to remain around without a clear purpose. To strut is to walk with a proud, self-important manner.",
-    "trap": "A person may walk silently or anxiously, but those qualities do not define strutting."
-  },
-  {
-    "id": 17,
-    "prompt": "POROUS : WATER :: ____ : LIGHT",
-    "options": [
-      "luminous",
-      "fragrant",
-      "heavy",
-      "sheer",
-      "reflective"
-    ],
-    "answer": 3,
-    "relation": "A property that allows something to pass through",
-    "explanation": "Porous material lets water pass through its tiny spaces. Sheer material lets light pass through its thin fabric.",
-    "trap": "Luminous means giving off light; reflective means bouncing light back. Neither means letting it pass through."
-  },
-  {
-    "id": 18,
-    "prompt": "GLIMMER : BLAZE :: DRIZZLE : ____",
-    "options": [
-      "mist",
-      "puddle",
-      "downpour",
-      "cloud",
-      "umbrella"
-    ],
-    "answer": 2,
-    "relation": "Increase in intensity",
-    "explanation": "A glimmer is faint light; a blaze is a strong, bright light. A drizzle is light rain; a downpour is heavy rain.",
-    "trap": "A puddle is a result of rain, and an umbrella is protection from it. The answer needs a stronger version of the same phenomenon."
-  },
-  {
-    "id": 19,
-    "prompt": "JEER : DERISION :: SOB : ____",
-    "options": [
-      "sorrow",
-      "volume",
-      "breath",
-      "story",
-      "audience"
-    ],
-    "answer": 0,
-    "relation": "Expression and the emotion or attitude behind it",
-    "explanation": "A jeer expresses derision, meaning scornful mockery. A sob expresses sorrow.",
-    "trap": "Volume describes loudness, not an emotion. An audience is a possible listener, not the feeling expressed."
-  },
-  {
-    "id": 20,
-    "prompt": "FURTIVE : SECRECY :: CANDID : ____",
-    "options": [
-      "caution",
-      "ceremony",
-      "openness",
-      "speed",
-      "uncertainty"
-    ],
-    "answer": 2,
-    "relation": "A quality and the idea it expresses",
-    "explanation": "Furtive behavior suggests secrecy. Candid speech is frank and expresses openness.",
-    "trap": "Caution may lead someone to speak carefully, but it does not mean speaking frankly and honestly."
-  },
-  {
-    "id": 21,
-    "prompt": "ANCHOR : SHIP :: ____",
-    "options": [
-      "cloud : rain",
-      "vagrant : resident",
-      "sail : breeze",
-      "root : tree",
-      "harbor : coast"
-    ],
-    "answer": 3,
-    "relation": "Part or device that holds something in place",
-    "explanation": "An anchor holds a ship in place. A root holds a tree in place in the ground.",
-    "trap": "Cloud : rain is a source relationship. Vagrant : resident compares wandering and settled ways of living; neither holds the other in place."
-  },
-  {
-    "id": 22,
-    "prompt": "FILCH : HONESTY :: BETRAY : ____",
-    "options": [
-      "surprise",
-      "loyalty",
-      "secrecy",
-      "memory",
-      "success"
-    ],
-    "answer": 1,
-    "relation": "An action that violates a value",
-    "explanation": "To filch is to take something dishonestly, violating honesty. To betray someone is to violate loyalty.",
-    "trap": "Betrayal may be secret or surprising, but those are possible circumstances, not the value being broken."
-  },
-  {
-    "id": 23,
-    "prompt": "VENOM : TOXIC :: GLUE : ____",
-    "options": [
-      "adhesive",
-      "flexible",
-      "decorative",
-      "colorful",
-      "fragile"
-    ],
-    "answer": 0,
-    "relation": "Substance and its defining property",
-    "explanation": "Venom is toxic: it can poison. Glue is adhesive: it can stick things together.",
-    "trap": "Glue can vary in color and flexibility, but adhesion is the property that makes it glue."
-  },
-  {
-    "id": 24,
-    "prompt": "LAMENT : GRIEF :: ____ : AMUSEMENT",
-    "options": [
-      "warning",
-      "command",
-      "report",
-      "oath",
-      "jest"
-    ],
-    "answer": 4,
-    "relation": "A kind of expression and the feeling it conveys",
-    "explanation": "A lament expresses grief or sadness. A jest is a playful expression of amusement.",
-    "trap": "A warning expresses concern about danger, and an oath makes a serious promise. Neither is meant as playful humor."
-  }
+const TEST_SETS = [
+  [
+    {
+      "id": 0,
+      "prompt": "CASCADE : DESCEND :: SPRINT : ____",
+      "options": [
+        "jump",
+        "rest",
+        "run",
+        "turn",
+        "swim"
+      ],
+      "answer": 2,
+      "relation": "Specific action and broader action",
+      "explanation": "To cascade is to descend in a flowing or tumbling way. To sprint is to run at top speed.",
+      "trap": "Jumping and turning can happen during a race, but neither names the broader action of sprinting."
+    },
+    {
+      "id": 1,
+      "prompt": "WHISPER : SPEAK :: ____",
+      "options": [
+        "nibble : eat",
+        "quibble : agree",
+        "listen : hear",
+        "draw : erase",
+        "read : book"
+      ],
+      "answer": 0,
+      "relation": "A particular way of doing something",
+      "explanation": "Whispering is speaking very quietly. Nibbling is eating in small bites.",
+      "trap": "To quibble means to argue over small details, not to agree. Read : book pairs an action with an object."
+    },
+    {
+      "id": 2,
+      "prompt": "WITTY : LAUGHTER :: FRIGHTENING : ____",
+      "options": [
+        "surprise",
+        "noise",
+        "darkness",
+        "danger",
+        "fear"
+      ],
+      "answer": 4,
+      "relation": "A quality and the response it can cause",
+      "explanation": "A witty comment can cause laughter. Something frightening can cause fear.",
+      "trap": "Danger is something that may cause fear, not the feeling that matches laughter as a response."
+    },
+    {
+      "id": 3,
+      "prompt": "EMBER : HEAT :: DRUM : ____",
+      "options": [
+        "wood",
+        "sound",
+        "stick",
+        "circle",
+        "skin"
+      ],
+      "answer": 1,
+      "relation": "Source and what it gives off",
+      "explanation": "An ember gives off heat. A drum that is struck gives off sound.",
+      "trap": "Wood and skin are possible materials. A stick is a tool used to play the drum."
+    },
+    {
+      "id": 4,
+      "prompt": "GLARE : ANGRY :: GRIN : ____",
+      "options": [
+        "thirsty",
+        "sleepy",
+        "puzzled",
+        "pleased",
+        "lonely"
+      ],
+      "answer": 3,
+      "relation": "Expression and feeling",
+      "explanation": "A glare can show that someone is angry. A grin can show that someone is pleased.",
+      "trap": "Both pairs connect a facial expression with the feeling it commonly shows."
+    },
+    {
+      "id": 5,
+      "prompt": "BRAVE : COURAGE :: ____ : STRENGTH",
+      "options": [
+        "patient",
+        "gentle",
+        "wealthy",
+        "brawny",
+        "clever"
+      ],
+      "answer": 3,
+      "relation": "Describing word and matching quality",
+      "explanation": "A brave person has courage. A brawny person has physical strength.",
+      "trap": "Wealth concerns possessions, and cleverness concerns thinking. Neither means strong muscles."
+    },
+    {
+      "id": 6,
+      "prompt": "QUAGMIRE : STUCK :: MAZE : ____",
+      "options": [
+        "tired",
+        "lost",
+        "muddy",
+        "small",
+        "silent"
+      ],
+      "answer": 1,
+      "relation": "Place and a difficulty it can cause",
+      "explanation": "Someone in a quagmire may get stuck in soft ground. Someone in a maze may get lost among its many paths.",
+      "trap": "A person can become tired in either place, but getting lost is the special difficulty created by a maze."
+    },
+    {
+      "id": 7,
+      "prompt": "SUBDUE : CONTROL :: REPAIR : ____",
+      "options": [
+        "check",
+        "break",
+        "build",
+        "paint",
+        "fix"
+      ],
+      "answer": 4,
+      "relation": "Words with similar meanings",
+      "explanation": "To subdue is to bring under control. To repair is to fix.",
+      "trap": "Checking something may help you find damage, but it does not necessarily repair it."
+    },
+    {
+      "id": 8,
+      "prompt": "CAREFUL : AVOID MISTAKES :: ____ : TELL THE TRUTH",
+      "options": [
+        "honest",
+        "crafty",
+        "sleepy",
+        "shy",
+        "busy"
+      ],
+      "answer": 0,
+      "relation": "A quality and the behavior it supports",
+      "explanation": "A careful person tries to avoid mistakes. An honest person tries to tell the truth.",
+      "trap": "Crafty suggests clever trickery. It does not mean committed to telling the truth."
+    },
+    {
+      "id": 9,
+      "prompt": "RUSE : FOOL :: WARNING : ____",
+      "options": [
+        "entertain",
+        "confuse",
+        "protect",
+        "measure",
+        "decorate"
+      ],
+      "answer": 2,
+      "relation": "Something and its intended purpose",
+      "explanation": "A ruse is meant to fool someone. A warning is meant to protect someone by pointing out danger.",
+      "trap": "A warning might be confusing, but confusion is not its intended purpose."
+    },
+    {
+      "id": 10,
+      "prompt": "VANQUISH : OPPONENT :: SOLVE : ____",
+      "options": [
+        "questioner",
+        "answer",
+        "victory",
+        "helper",
+        "puzzle"
+      ],
+      "answer": 4,
+      "relation": "Action and what it acts on",
+      "explanation": "You vanquish an opponent. You solve a puzzle.",
+      "trap": "An answer is a result of solving, just as victory is a result of defeating someone."
+    },
+    {
+      "id": 11,
+      "prompt": "GAUNT : THIN :: SOAKED : ____",
+      "options": [
+        "clean",
+        "cold",
+        "wet",
+        "heavy",
+        "dry"
+      ],
+      "answer": 2,
+      "relation": "Stronger description and basic quality",
+      "explanation": "Gaunt describes someone who is very thin, often looking unhealthy. Soaked describes something that is very wet.",
+      "trap": "A soaked coat may feel cold or heavy, but soaked specifically describes wetness."
+    },
+    {
+      "id": 12,
+      "prompt": "RESIDUE : CLEAN AWAY :: KNOT : ____",
+      "options": [
+        "untie",
+        "tighten",
+        "color",
+        "weave",
+        "measure"
+      ],
+      "answer": 0,
+      "relation": "Something unwanted and an action that removes it",
+      "explanation": "You can clean away residue. You can untie a knot.",
+      "trap": "Tightening makes a knot firmer. Coloring or measuring it does not undo it."
+    },
+    {
+      "id": 13,
+      "prompt": "HUSTLE : QUICKLY :: CREEP : ____",
+      "options": [
+        "carelessly",
+        "loudly",
+        "proudly",
+        "slowly",
+        "suddenly"
+      ],
+      "answer": 3,
+      "relation": "Action and its usual manner",
+      "explanation": "To hustle is to move quickly and energetically. To creep is to move slowly and carefully.",
+      "trap": "Creeping may be quiet, but loudly is the opposite. The matching answer describes speed."
+    },
+    {
+      "id": 14,
+      "prompt": "ROTUND : SHAPE :: NOISY : ____",
+      "options": [
+        "size",
+        "sound",
+        "color",
+        "taste",
+        "weight"
+      ],
+      "answer": 1,
+      "relation": "Describing word and the feature it describes",
+      "explanation": "Rotund describes a rounded shape. Noisy describes sound.",
+      "trap": "A noisy object can be any size or color. Those features do not explain what noisy means."
+    },
+    {
+      "id": 15,
+      "prompt": "PRECIPICE : FALL :: ICY ROAD : ____",
+      "options": [
+        "swim",
+        "skid",
+        "climb",
+        "melt",
+        "shine"
+      ],
+      "answer": 1,
+      "relation": "Dangerous place and a risk there",
+      "explanation": "A precipice presents the risk of a fall. An icy road presents the risk that a vehicle will skid.",
+      "trap": "Melting happens to ice itself. The matching action is a danger to someone using the place."
+    },
+    {
+      "id": 16,
+      "prompt": "LOITER : CLEAR PURPOSE :: GUESS : ____",
+      "options": [
+        "attempt",
+        "answer",
+        "thought",
+        "choice",
+        "certainty"
+      ],
+      "answer": 4,
+      "relation": "Action and something it lacks",
+      "explanation": "To loiter is to stay around without a clear purpose. To guess is to answer without certainty.",
+      "trap": "A guess is still an answer, a choice, and an attempt. What it lacks is knowing for sure."
+    },
+    {
+      "id": 17,
+      "prompt": "SHEER : FABRIC :: SPICY : ____",
+      "options": [
+        "weather",
+        "music",
+        "stone",
+        "food",
+        "paper"
+      ],
+      "answer": 3,
+      "relation": "A quality and the thing it can describe",
+      "explanation": "Sheer can describe thin fabric that lets light through. Spicy can describe food with a strong, hot flavor.",
+      "trap": "The relationship is a describing word and the kind of thing it fits."
+    },
+    {
+      "id": 18,
+      "prompt": "GLIMMER : FAINT :: WHISPER : ____",
+      "options": [
+        "angry",
+        "bright",
+        "quiet",
+        "short",
+        "rough"
+      ],
+      "answer": 2,
+      "relation": "Something and its defining level of strength",
+      "explanation": "A glimmer is faint light. A whisper is quiet speech.",
+      "trap": "A whisper can be angry or short, but those details are not what makes it a whisper."
+    },
+    {
+      "id": 19,
+      "prompt": "JEER : HURT :: SOOTHE : ____",
+      "options": [
+        "comfort",
+        "startle",
+        "warn",
+        "question",
+        "annoy"
+      ],
+      "answer": 0,
+      "relation": "Action and its intended effect",
+      "explanation": "To jeer at someone is to mock them, often to hurt their feelings. To soothe someone is to comfort or calm them.",
+      "trap": "Warning may help someone avoid danger, but it does not mean calming their distress."
+    },
+    {
+      "id": 20,
+      "prompt": "FURTIVE : OPEN :: TIMID : ____",
+      "options": [
+        "quiet",
+        "nervous",
+        "bold",
+        "young",
+        "polite"
+      ],
+      "answer": 2,
+      "relation": "Opposite qualities",
+      "explanation": "Furtive behavior is secretive rather than open. Timid means shy or fearful, while bold means willing to act without fear.",
+      "trap": "Nervous is close to timid, so it follows the wrong direction."
+    },
+    {
+      "id": 21,
+      "prompt": "DROWSY : SLEEPY :: ____",
+      "options": [
+        "narrow : wide",
+        "vagrant : settled",
+        "cheerful : sad",
+        "silent : quiet",
+        "heavy : weight"
+      ],
+      "answer": 3,
+      "relation": "Words with similar meanings",
+      "explanation": "Drowsy and sleepy mean nearly the same thing. Silent and quiet also have similar meanings.",
+      "trap": "Vagrant describes wandering, while settled means staying in one place. Heavy : weight gives a quality and a feature."
+    },
+    {
+      "id": 22,
+      "prompt": "FILCH : STEAL :: GIGGLE : ____",
+      "options": [
+        "smile",
+        "laugh",
+        "talk",
+        "shout",
+        "sing"
+      ],
+      "answer": 1,
+      "relation": "Specific action and broader action",
+      "explanation": "To filch is to steal, usually something small and secretly. To giggle is to laugh in a light, repeated way.",
+      "trap": "Smiling is related to laughter, but a giggle is a kind of laugh, not just a smile."
+    },
+    {
+      "id": 23,
+      "prompt": "POISON : TOXIC :: GLUE : ____",
+      "options": [
+        "sticky",
+        "sweet",
+        "sharp",
+        "soft",
+        "round"
+      ],
+      "answer": 0,
+      "relation": "Thing and its main property",
+      "explanation": "Poison is toxic: it can harm the body. Glue is sticky: it holds things together.",
+      "trap": "Glue may have different colors or forms, but stickiness is the property that makes it useful as glue."
+    },
+    {
+      "id": 24,
+      "prompt": "JEST : JOKE :: ERROR : ____",
+      "options": [
+        "secret",
+        "lesson",
+        "question",
+        "excuse",
+        "mistake"
+      ],
+      "answer": 4,
+      "relation": "Words with similar meanings",
+      "explanation": "A jest is a joke. An error is a mistake.",
+      "trap": "A mistake can lead to a lesson or an excuse, but those are not other words for the mistake itself."
+    }
+  ],
+  [
+    {
+      "id": 0,
+      "prompt": "CASCADE : WATER :: AVALANCHE : ____",
+      "options": [
+        "wind",
+        "snow",
+        "smoke",
+        "rain",
+        "dust"
+      ],
+      "answer": 1,
+      "relation": "Moving mass and its material",
+      "explanation": "A cascade is falling water. A snow avalanche is a large mass of snow moving down a slope.",
+      "trap": "Wind may move snow, but wind is not the main material in a snow avalanche."
+    },
+    {
+      "id": 1,
+      "prompt": "QUIBBLE : MINOR :: CRISIS : ____",
+      "options": [
+        "ordinary",
+        "silent",
+        "funny",
+        "serious",
+        "brief"
+      ],
+      "answer": 3,
+      "relation": "A problem and how serious it is",
+      "explanation": "A quibble is a minor objection about a small detail. A crisis is a serious problem that needs attention.",
+      "trap": "Brief tells how long something lasts. A crisis can be brief and still serious."
+    },
+    {
+      "id": 2,
+      "prompt": "FEARLESS : BRAVE :: ____",
+      "options": [
+        "truthful : honest",
+        "witty : serious",
+        "silent : noisy",
+        "simple : difficult",
+        "careful : mistake"
+      ],
+      "answer": 0,
+      "relation": "Words with similar meanings",
+      "explanation": "Fearless and brave have similar meanings. Truthful and honest do too.",
+      "trap": "Witty means cleverly funny, not serious. Careful : mistake names a quality and something it may help avoid."
+    },
+    {
+      "id": 3,
+      "prompt": "EMBER : PUT OUT :: STAIN : ____",
+      "options": [
+        "write down",
+        "spread out",
+        "fold up",
+        "heat up",
+        "wash out"
+      ],
+      "answer": 4,
+      "relation": "Thing and an action that removes it",
+      "explanation": "You put out an ember so it stops burning. You wash out a stain so it no longer marks the material.",
+      "trap": "Spreading a stain makes it larger. Folding the material does not remove the stain."
+    },
+    {
+      "id": 4,
+      "prompt": "GLARE : EYES :: WHISTLE : ____",
+      "options": [
+        "ears",
+        "hands",
+        "lips",
+        "feet",
+        "hair"
+      ],
+      "answer": 2,
+      "relation": "Action and body part used",
+      "explanation": "You use your eyes to glare at someone. You use your lips to whistle a tune.",
+      "trap": "Ears receive sound; they are not what produces a whistle."
+    },
+    {
+      "id": 5,
+      "prompt": "BRAWNY : LIFTING :: SHARP : ____",
+      "options": [
+        "cutting",
+        "carrying",
+        "folding",
+        "painting",
+        "measuring"
+      ],
+      "answer": 0,
+      "relation": "Quality that helps with an action",
+      "explanation": "Being brawny helps a person lift heavy things. A sharp edge helps a tool cut.",
+      "trap": "A tool may be carried or measured, but sharpness does not make those tasks easier."
+    },
+    {
+      "id": 6,
+      "prompt": "QUAGMIRE : MUD :: SNOWDRIFT : ____",
+      "options": [
+        "rain",
+        "wind",
+        "snow",
+        "sand",
+        "ice"
+      ],
+      "answer": 2,
+      "relation": "A mass and the material that forms it",
+      "explanation": "A quagmire is a deep, soft area of wet muddy ground. A snowdrift is a pile formed from snow blown by the wind.",
+      "trap": "Wind builds a snowdrift, but snow is the material in the pile. Match material, not cause."
+    },
+    {
+      "id": 7,
+      "prompt": "SUBDUE : ANGER :: DIM : ____",
+      "options": [
+        "darkness",
+        "light",
+        "switch",
+        "window",
+        "shadow"
+      ],
+      "answer": 1,
+      "relation": "Make something less strong",
+      "explanation": "To subdue anger is to bring it under control and reduce its force. To dim light is to make it less bright.",
+      "trap": "A switch may be used to dim a lamp, but it is a tool, not what is reduced."
+    },
+    {
+      "id": 8,
+      "prompt": "CRAFTY : TRICK :: GENEROUS : ____",
+      "options": [
+        "rule",
+        "prize",
+        "request",
+        "loss",
+        "gift"
+      ],
+      "answer": 4,
+      "relation": "Personal quality and an action or thing that shows it",
+      "explanation": "A clever trick can show that someone is crafty. Giving a gift can show that someone is generous.",
+      "trap": "Receiving a prize does not show generosity. The relationship concerns something a person does or gives."
+    },
+    {
+      "id": 9,
+      "prompt": "MISTAKE : ERROR :: TRICK : ____",
+      "options": [
+        "schedule",
+        "recipe",
+        "receipt",
+        "ruse",
+        "ruler"
+      ],
+      "answer": 3,
+      "relation": "Words with similar meanings",
+      "explanation": "A mistake is an error. A trick meant to fool someone is a ruse.",
+      "trap": "A recipe gives cooking instructions and a receipt records a purchase. Neither means a trick."
+    },
+    {
+      "id": 10,
+      "prompt": "VANQUISH : DEFEAT :: SHATTER : ____",
+      "options": [
+        "drop",
+        "hold",
+        "shine",
+        "break",
+        "bend"
+      ],
+      "answer": 3,
+      "relation": "Stronger action and broader action",
+      "explanation": "To vanquish is to defeat completely. To shatter is to break into many pieces.",
+      "trap": "Dropping something may cause it to shatter, but dropping is a cause rather than the broader action."
+    },
+    {
+      "id": 11,
+      "prompt": "GAUNT : PLUMP :: EMPTY : ____",
+      "options": [
+        "large",
+        "shallow",
+        "open",
+        "clean",
+        "full"
+      ],
+      "answer": 4,
+      "relation": "Opposite qualities",
+      "explanation": "Gaunt describes a very thin body, while plump describes a fuller, rounded body. Empty and full are also opposites.",
+      "trap": "A large box can still be empty. Size is a different feature from how much it contains."
+    },
+    {
+      "id": 12,
+      "prompt": "RESIDUE : LEFTOVER :: FRAGMENT : ____",
+      "options": [
+        "pattern",
+        "whole",
+        "piece",
+        "surface",
+        "mixture"
+      ],
+      "answer": 2,
+      "relation": "Word and a simpler meaning",
+      "explanation": "Residue is material left over. A fragment is a piece of something.",
+      "trap": "Whole is the opposite direction: a fragment is only part of a whole."
+    },
+    {
+      "id": 13,
+      "prompt": "SAVE : SPEND :: ____",
+      "options": [
+        "freeze : melt",
+        "hustle : hurry",
+        "shout : yell",
+        "whisper : speak",
+        "float : water"
+      ],
+      "answer": 0,
+      "relation": "Actions with opposite meanings",
+      "explanation": "Saving money and spending it move in opposite directions. Freezing and melting also move in opposite directions.",
+      "trap": "Hustle and hurry have similar meanings, not opposite meanings. Whispering is a way of speaking."
+    },
+    {
+      "id": 14,
+      "prompt": "ROTUND : ROUND :: HOLLOW : ____",
+      "options": [
+        "flat on top",
+        "empty inside",
+        "rough outside",
+        "sharp at one end",
+        "heavy all over"
+      ],
+      "answer": 1,
+      "relation": "Describing word and its meaning",
+      "explanation": "Rotund means round in shape. Hollow means having empty space inside.",
+      "trap": "Hollow describes the inside of an object, not how its outer surface feels."
+    },
+    {
+      "id": 15,
+      "prompt": "PRECIPICE : CLIFF :: BOULDER : ____",
+      "options": [
+        "pebble",
+        "hill",
+        "sand",
+        "cave",
+        "rock"
+      ],
+      "answer": 4,
+      "relation": "A particular kind and its larger group",
+      "explanation": "A precipice is a very steep cliff. A boulder is a large rock.",
+      "trap": "A pebble is a small rock, not the larger group that includes a boulder. A hill is a land shape rather than a single rock."
+    },
+    {
+      "id": 16,
+      "prompt": "LOITER : REMAIN :: FLEE : ____",
+      "options": [
+        "hide",
+        "leave",
+        "follow",
+        "rest",
+        "wait"
+      ],
+      "answer": 1,
+      "relation": "Specific action and broader action",
+      "explanation": "To loiter is to remain around without a clear purpose. To flee is to leave quickly to escape danger.",
+      "trap": "Hiding may happen after fleeing, but fleeing itself means moving away."
+    },
+    {
+      "id": 17,
+      "prompt": "MILD : GENTLE :: ____ : COMPLETE",
+      "options": [
+        "partial",
+        "thin",
+        "slight",
+        "sheer",
+        "plain"
+      ],
+      "answer": 3,
+      "relation": "Words with similar meanings in context",
+      "explanation": "Mild can mean gentle. Sheer can mean complete or absolute, as in sheer nonsense.",
+      "trap": "Partial means only some, which is the opposite of complete. Sheer has several meanings; use the one that fits this pair."
+    },
+    {
+      "id": 18,
+      "prompt": "GLIMMER : LIGHT :: DROP : ____",
+      "options": [
+        "liquid",
+        "bottle",
+        "cloud",
+        "thirst",
+        "ice"
+      ],
+      "answer": 0,
+      "relation": "A small amount and what it is an amount of",
+      "explanation": "A glimmer is a small amount of light. A drop is a small amount of liquid.",
+      "trap": "A bottle is a container for liquid, not the material that makes up a drop."
+    },
+    {
+      "id": 19,
+      "prompt": "JEER : PRAISE :: DAMAGE : ____",
+      "options": [
+        "break",
+        "harm",
+        "repair",
+        "destroy",
+        "scratch"
+      ],
+      "answer": 2,
+      "relation": "Actions that work in opposite directions",
+      "explanation": "To jeer at someone is to mock rather than praise them. To damage something is the opposite of repairing it.",
+      "trap": "Harm, break, destroy, and scratch all point toward damage instead of reversing it."
+    },
+    {
+      "id": 20,
+      "prompt": "FURTIVE : HIDE :: CURIOUS : ____",
+      "options": [
+        "sleep",
+        "refuse",
+        "explore",
+        "forget",
+        "obey"
+      ],
+      "answer": 2,
+      "relation": "A quality and an action it encourages",
+      "explanation": "A furtive person tries to hide what they are doing. A curious person wants to explore and find things out.",
+      "trap": "Everyone needs sleep sometimes, but sleeping does not show a wish to learn. Match the action linked to the quality."
+    },
+    {
+      "id": 21,
+      "prompt": "VAGRANT : WANDERING :: RESIDENT : ____",
+      "options": [
+        "settled",
+        "lost",
+        "wealthy",
+        "dishonest",
+        "young"
+      ],
+      "answer": 0,
+      "relation": "Person and a feature of where they live",
+      "explanation": "A vagrant is a wandering person without a settled home. A resident is someone who lives in a particular place.",
+      "trap": "These words concern where someone lives, not their age, wealth, or honesty."
+    },
+    {
+      "id": 22,
+      "prompt": "FILCH : HONESTY :: BETRAY : ____",
+      "options": [
+        "speed",
+        "surprise",
+        "memory",
+        "success",
+        "loyalty"
+      ],
+      "answer": 4,
+      "relation": "An action that breaks a value",
+      "explanation": "To filch is to steal, which goes against honesty. To betray someone is to break their trust, which goes against loyalty.",
+      "trap": "Betrayal can be surprising, but surprise is an effect. Loyalty is the value being broken."
+    },
+    {
+      "id": 23,
+      "prompt": "TOXIC : POISONOUS :: FRAGILE : ____",
+      "options": [
+        "easy to carry",
+        "easily broken",
+        "hard to find",
+        "slow to grow",
+        "ready to eat"
+      ],
+      "answer": 1,
+      "relation": "Word and its meaning",
+      "explanation": "Toxic means poisonous or harmful. Fragile means easily broken.",
+      "trap": "Something light may be easy to carry without being easy to break. Keep the exact meaning."
+    },
+    {
+      "id": 24,
+      "prompt": "PROMISE : COMMITMENT :: ____",
+      "options": [
+        "greeting : goodbye",
+        "jest : threat",
+        "question : answer",
+        "apology : regret",
+        "story : paper"
+      ],
+      "answer": 3,
+      "relation": "Expression and the meaning it communicates",
+      "explanation": "A promise communicates a commitment to do something. An apology communicates regret for something wrong.",
+      "trap": "A jest is a joke, not a threat. A question asks for an answer rather than communicating one."
+    }
+  ]
 ];
